@@ -1,7 +1,8 @@
----
-layout: post
-title: "Unraveling Culinary Complexity: A Data-Driven Analysis of Recipe Complexity and User Satisfaction"
-date: 2025-03-13
+Unraveling Culinary Complexity: A Data-Driven Analysis of Recipe Complexity and User Satisfaction
+## Bryan Zhang
+*University of California San Diego*  
+*March 13th, 2025*
+
 ---
 
 ## Introduction
