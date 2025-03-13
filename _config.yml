@@ -2,10 +2,4 @@ remote_theme: "jekyll/minima@1e8a445"
 plugins:
 - jekyll-remote-theme # add this line to the plugins list if you already have one
 
-title: "Unraveling Culinary Complexity: A Data-Driven Analysis of Recipe Complexity and User Satisfaction"
-author:
-  name: "Bryan Zhang"
-custom_date: "2025-03-13"
-
-site.title: ""
-site.description: ""
+title: ""
