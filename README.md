@@ -1,7 +1,11 @@
-# Unraveling Culinary Complexity: A Data-Driven Analysis of Recipe Complexity and User Satisfaction
+title: "Unraveling Culinary Complexity: A Data-Driven Analysis of Recipe Complexity and User Satisfaction"
+author: "Bryan Zhang"
+date: March 14th, 2025
+---
+
 ## Bryan Zhang
 *University of California San Diego*  
-*March 13th, 2025*
+*March 14th, 2025*
 
 ---
 
@@ -22,7 +26,6 @@ To explore this relationship, we will analyze two datasets from *food.com*, an o
 | `date`       | `Timestamp` | The date when the review was posted.                |
 | `rating`     | `int`    | The rating given to the recipe.                      |
 | `review`     | `str`    | The content of the user's review.                    |
-
 *731,927 rows, 5 columns*
 
 ### Recipes Dataset
@@ -41,5 +44,4 @@ To explore this relationship, we will analyze two datasets from *food.com*, an o
 | `description`    | `str`      | A user-provided description of the recipe.                                                                                                               |
 | `ingredients`    | `list`     | A list of ingredients required for the recipe.                                                                                                          |
 | `n_ingredients`  | `int`      | The number of ingredients used in the recipe.                                                                                                           |
-
 *83,782 rows, 12 columns*
