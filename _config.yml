@@ -3,10 +3,4 @@ plugins:
 - jekyll-remote-theme # add this line to the plugins list if you already have one
 
 minima:
-  social_links:
-    - title: Jekyll repository at GitHub
-      icon: github
-      url: "https://github.com/jekyll/jekyll"
-    - title: Jekyll at X (formerly Twitter)
-      icon: x-twitter
-      url: "https://x.com/jekyllrb"
+  title: ""
