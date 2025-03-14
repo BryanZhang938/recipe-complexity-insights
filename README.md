@@ -238,10 +238,10 @@ We will use the **F1-score** as our primary evaluation metric due to its effecti
 
 ## Baseline Model
 
-**Model Description**
+**Model Description:**
 We built a logistic regression model to predict user ratings based on key recipe attributes. The model uses three features: `minutes`, `n_steps`, and `n_ingredients`. All of these features are quantitative, meaning they are numerical measurements that can be used directly in the model without the need for additional encoding. Because the features are already in the appropriate format, no ordinal or nominal encoding was necessary.
 
-**Model Results**
+**Model Results:**
 Despite the simplicity and interpretability of logistic regression, our evaluation of the model revealed some significant limitations. The model achieved an F1-score of 0.87 for predicting the rating of 5. However, for all other rating classes, the F1-score was 0. This imbalance indicates that the model is heavily biased towards predicting rating 5 and fails to generalize across the full range of user ratings. As a result, while the model performs well on the most frequent class, it is not effective for this prediction problem. Thus, we do not consider the current model to be "good" because it does not accurately capture the variability in user ratings, highlighting the need for alternative modeling strategies or additional features to address the class imbalance.
 
 ## Final Model
