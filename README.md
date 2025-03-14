@@ -288,3 +288,17 @@ While the final model shows improvements in overall weighted F1-score, it still 
 Even though the current performance indicates room for improvement, the added features have improved the model's ability to capture underlying factors that may influence user satisfaction. Future work could further address class imbalance or explore additional feature transformations to enhance performance across all rating classes.
 
 ---
+
+## Fairness Analysis
+
+We will conclude with a fairness analysis of the model that we just built. We will compare the performance of our model on the following two groups: Recipes labelled as high complexity and recipes labelled as low complexity. Like the one used in our model, we will be using the weighted F1_Score as our metric as it accounts for class imbalance. So, we have the following hypotheses:
+
+**Null Hypothesis:** The model’s performance is the same for both high-complexity and low-complexity recipes.
+
+**Alternative Hypothesis:** The model’s performance is better for low-complexity recipes than for high-complexity recipes.
+
+**Test Statistic:** The difference between the weighted F1-Scores between low-complexity recipes and high-complexity recipes.
+
+**Significance Level:** 0.05
+
+In this test, the observed test statistic is approximately **0.005**. The resulting p-value is **0.104**, so we fail to reject the null hypothesis. There is insufficient evidence to conclude that the model performs worse for recipes in the high-complexity group compared to the low-complexity group.
