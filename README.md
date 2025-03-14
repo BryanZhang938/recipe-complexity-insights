@@ -2,7 +2,7 @@
 
 ## Bryan Zhang
 
-*March 13th, 2025*
+*March 14th, 2025*
 
 ---
 
@@ -117,7 +117,7 @@ This bar graph displays the distribution of recipe ratings. The x-axis represent
 ></iframe>
 
 *Figure: Distribution of Recipe Complexity Scores*  
-This histogram illustrates the distribution of recipe complexity scores. Most recipes have scores between -1 and 1, with a right-skewed distribution indicating that the majority of recipes have relatively low-complexity, while fewer recipes exhibit high-complexity.
+This histogram illustrates the distribution of recipe complexity scores. Most recipes have scores between -2 and 2, with a right-skewed distribution indicating that the majority of recipes have relatively low-complexity, while fewer recipes exhibit high-complexity.
 
 ---
 
@@ -146,9 +146,43 @@ Below is a pivot table summarizing key metrics by recipe complexity:
 | **High**   | 119.48         | 11.73               | 13.75        | 4.6764         |
 | **Low**    | 94.10          | 6.41                | 6.28         | 4.6833         |
 
-This table highlights the differences between high and low-complexity recipes:
+This table highlights key differences between high and low-complexity recipes:
 - **Preparation Time:** High-complexity recipes take longer to cook compared to low-complexity recipes.
 - **Ingredients and Steps:** High-complexity recipes use more ingredients and require more steps.
 - **Ratings:** Regardless of the recipe complexity, the average ratings are nearly identical.
 
-These findings suggest that while high-complexity recipes demand more effort in terms of time, ingredients, and steps, they do not necessarily receive higher ratings. In contrast, simpler recipes may be just as well-received, highlighting that ease of preparation could be a crucial factor in user satisfaction. We will later perform a permutation test to further investigate this observation.
+These findings suggest that while high-complexity recipes require more effort in terms of time, ingredients, and steps, they do not necessarily receive higher ratings. We will later perform a permutation test to further investigate this observation.
+
+## Assessment of Missingness
+
+The only columns in `recipes` that have a significant amount of missing values are `rating`, `review`, and `date`. In this section, we will explore the missingness in `recipes`.
+
+### NMAR Analysis
+We claim that the missingness in the `review` column is likely to be Not Missing At Random (NMAR). This is likely due to the fact that users who feel negative about a recipe may be less likely to leave a review. Users who had a bad experience with the recipe may be less likely to leave a rreview because they may not feel that it is worth their time or they prefer to not engage with the product after a negative experience. On the other hand, users who had a good experience may be more inclined to leave a review as to recommend to other people or to create more traction on the particular recipe.
+
+### Misingness Dependency
+We now continue by examining the missingness of the `rating` column in `recipes` by testing its dependency on the `complexity` column. To achieve this, we will be performing a permutation test. So, we propose the following Null and Alternate Hypotheses and the Test Statistic and the Significance Level.
+
+**Null Hypothesis**: The missingness of ratings does not depend on the complexity score of a recipe.
+
+**Alternate Hypothesis**: The missingness of ratings depends on the complexity score of a recipe.
+
+**Test Statistic**: The absolute difference of the complexity score means between the recipes without missing ratings and the recipes with missing ratings.
+
+**Significance Level**: 0.05
+
+After performing the permutation test, we yield the following empirical distribution of the test statistics.
+
+<iframe  
+  src="assets/missingness1.html"  
+  width="800"  
+  height="600"  
+  frameborder="0"  
+></iframe>
+
+<iframe  
+  src="assets/missingness2.html"  
+  width="800"  
+  height="600"  
+  frameborder="0"  
+></iframe>
