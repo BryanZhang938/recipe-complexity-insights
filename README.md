@@ -155,23 +155,24 @@ These findings suggest that while high-complexity recipes require more effort in
 
 ## Assessment of Missingness
 
-The only columns in `recipes` that have a significant amount of missing values are `rating`, `review`, and `date`. In this section, we will explore the missingness in `recipes`.
+The only columns in `recipes` that exhibit a significant amount of missing values are `rating`, `review`, and `date`. In this section, we explore the patterns and potential dependencies in this missingness.
 
 ### NMAR Analysis
-We claim that the missingness in the `review` column is likely to be Not Missing At Random (NMAR). This is likely due to the fact that users who feel negative about a recipe may be less likely to leave a review. Users who had a bad experience with the recipe may be less likely to leave a rreview because they may not feel that it is worth their time or they prefer to not engage with the product after a negative experience. On the other hand, users who had a good experience may be more inclined to leave a review as to recommend to other people or to create more traction on the particular recipe.
 
-### Misingness Dependency
-We now continue by examining the missingness of the `rating` column in `recipes` by testing its dependency on the `complexity` column. To achieve this, we will be performing a permutation test. So, we propose the following Null and Alternate Hypotheses and the Test Statistic and the Significance Level.
+We claim that the missingness in the `review` column is **Not Missing At Random (NMAR)**. This may be due to user behavior: users who have a negative experience with a recipe might be less inclined to leave a review because they do not feel it is worth their time or prefer not to engage after a poor experience. Conversely, users with positive experiences are more likely to post reviews to recommend the recipe and generate traction within the community.
 
-**Null Hypothesis**: The missingness of ratings does not depend on the complexity score of a recipe.
+### Missingness Dependency: Complexity Score
 
-**Alternate Hypothesis**: The missingness of ratings depends on the complexity score of a recipe.
+Next, we examine whether the missingness in the `rating` column is associated with the complexity score of a recipe by performing a permutation test. We define our hypotheses as follows:
 
-**Test Statistic**: The absolute difference of the complexity score means between the recipes without missing ratings and the recipes with missing ratings.
+- **Null Hypothesis:** The missingness of ratings does not depend on the complexity score of a recipe.
+- **Alternate Hypothesis:** The missingness of ratings depends on the complexity score of a recipe.
 
-**Significance Level**: 0.05
+**Test Statistic:**  The absolute difference in the mean complexity score between recipes with missing ratings and those with non-missing ratings.
 
-We simulate 1,000 test statistics to yield the following empirical distribution.
+**Significance Level:** 0.05
+
+We simulated 1,000 test statistics to build the empirical distribution.
 
 <iframe  
   src="assets/missingness1.html"  
@@ -180,19 +181,20 @@ We simulate 1,000 test statistics to yield the following empirical distribution.
   frameborder="0"  
 ></iframe>
 
-For this test, we have a test statistic of approximately 0.177 as indicated by the red vertical bar on the graph above. This yields the p-value of approximately 0.0, so we are able to reject the Null Hypothesis and can conclude that the missingness of ratings depends on the complexity score of a recipe.
+In this test, the observed test statistic is approximately **0.177** (as indicated by the red vertical bar). The resulting p-value is approximately **0.0**, which leads us to reject the null hypothesis. Thus, we conclude that the missingness in the `rating` column is dependent on the complexity score of a recipe.
 
-We now continue by examining the missingness of `rating` in `recipes` by testing its dependency on the `minutes` column. We will similarly perform another permutation test. So, we propose the following Null and Alternate Hypotheses and the Test Statistic and the Significance Level.
+### Missingness Dependency: Preparation Time (Minutes)
 
-**Null Hypothesis**: The missingness of ratings does not depend on the minutes needed to make the recipe.
+We further assess the missingness in `rating` by testing its dependency on the `minutes` column using a similar permutation test. The hypotheses for this test are:
 
-**Alternate Hypothesis**: The missingness of ratings depends on the minutes needed to make the recipe.
+- **Null Hypothesis:** The missingness of ratings does not depend on the minutes needed to prepare the recipe.
+- **Alternate Hypothesis:** The missingness of ratings depends on the minutes required to prepare the recipe.
 
-**Test Statistic**: The absolute difference of the mean minutes taken to make the recipe between the recipes without missing ratings and the recipes with missing ratings.
+**Test Statistic:**  The absolute difference in the mean preparation time between recipes with missing ratings and those with non-missing ratings.
 
-**Significance Level**: 0.05
+**Significance Level:** 0.05
 
-We simulate 1,000 test statistics to yield the following empirical distribution.
+Again, we simulated 1,000 test statistics to create an empirical distribution.
 
 <iframe  
   src="assets/missingness2.html"  
@@ -201,4 +203,28 @@ We simulate 1,000 test statistics to yield the following empirical distribution.
   frameborder="0"  
 ></iframe>
 
-For this test, we have a test statistic of approximately 51.4693 as indicated by the red vertical bar on the graph above. This yields the p-value of approximately 0.126, so we are unable to reject the Null Hypothesis and thus unable to conclude that the missingness of ratings depends on the minutes needed to make the recipe.
+For this test, the observed test statistic is approximately **51.4693** (as indicated by the red vertical bar). The corresponding p-value is approximately **0.126**. Since this p-value is greater than 0.05, we fail to reject the null hypothesis. Therefore, we conclude that there is insufficient evidence to claim that the missingness of ratings depends on the minutes required to prepare the recipe.
+
+--- 
+
+## Hypothesis Testing
+
+As mentioned earlier, we are interested in whether there is a significant difference in ratings between high- and low-complexity recipes. To investigate this, we conducted a one-sided permutation test. This approach allows us to determine whether recipes with high complexity have significantly lower ratings than recipes with low complexity. The significance level is set at 0.05. Our hypotheses are as follows:
+
+- **Null Hypothesis:** There is no difference in average ratings between high-complexity and low-complexity recipes.
+- **Alternate Hypothesis:** Recipes with high complexity have lower average ratings than those with low complexity.
+
+**Test Statistic:**  The difference in the mean ratings between recipes with high complexity and those with low complexity.
+
+**Significance Level:** 0.05
+
+<iframe  
+  src="assets/permtest.html"  
+  width="800"  
+  height="600"  
+  frameborder="0"  
+></iframe>
+
+For this test, the observed test statistic is approximately **-0.007** (as indicated by the red vertical bar). The corresponding p-value is **0.017**. Since the p-value is less than 0.05, we reject the null hypothesis. Therefore, we conclude that recipes with high complexity have lower average ratings than those with low complexity.
+
+--- 
