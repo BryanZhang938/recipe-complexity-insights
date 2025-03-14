@@ -291,7 +291,7 @@ Even though the current performance indicates room for improvement, the added fe
 
 ## Fairness Analysis
 
-We will conclude with a fairness analysis of the model that we just built. We will compare the performance of our model on the following two groups: Recipes labelled as high complexity and recipes labelled as low complexity. Like the one used in our model, we will be using the weighted F1_Score as our metric as it accounts for class imbalance. So, we have the following hypotheses:
+We will conclude with a fairness analysis of the model that we just built. We will compare the performance of our model on the following two groups: Recipes labelled as high complexity and recipes labelled as low complexity. Like the one used in our model, we will be using the weighted F1-Score as our metric as it accounts for class imbalance. So, we have the following hypotheses:
 
 **Null Hypothesis:** The model’s performance is the same for both high-complexity and low-complexity recipes.
 
