@@ -171,7 +171,7 @@ We now continue by examining the missingness of the `rating` column in `recipes`
 
 **Significance Level**: 0.05
 
-After performing the permutation test, we yield the following empirical distribution of the test statistics.
+We simulate 1,000 test statistics to yield the following empirical distribution.
 
 <iframe  
   src="assets/missingness1.html"  
@@ -180,9 +180,25 @@ After performing the permutation test, we yield the following empirical distribu
   frameborder="0"  
 ></iframe>
 
+For this test, we have a test statistic of approximately 0.177 as indicated by the red vertical bar on the graph above. This yields the p-value of approximately 0.0, so we are able to reject the Null Hypothesis and can conclude that the missingness of ratings depends on the complexity score of a recipe.
+
+We now continue by examining the missingness of `rating` in `recipes` by testing its dependency on the `minutes` column. We will similarly perform another permutation test. So, we propose the following Null and Alternate Hypotheses and the Test Statistic and the Significance Level.
+
+**Null Hypothesis**: The missingness of ratings does not depend on the minutes needed to make the recipe.
+
+**Alternate Hypothesis**: The missingness of ratings depends on the minutes needed to make the recipe.
+
+**Test Statistic**: The absolute difference of the mean minutes taken to make the recipe between the recipes without missing ratings and the recipes with missing ratings.
+
+**Significance Level**: 0.05
+
+We simulate 1,000 test statistics to yield the following empirical distribution.
+
 <iframe  
   src="assets/missingness2.html"  
   width="800"  
   height="600"  
   frameborder="0"  
 ></iframe>
+
+For this test, we have a test statistic of approximately 51.4693 as indicated by the red vertical bar on the graph above. This yields the p-value of approximately 0.126, so we are unable to reject the Null Hypothesis and thus unable to conclude that the missingness of ratings depends on the minutes needed to make the recipe.
