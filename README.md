@@ -72,19 +72,46 @@ Before we begin analyzing our dataset, we must first clean our dataset first and
 
 Following data cleaning, we have our resultant DataFrame, of which the first few rows are shown below.
 
-|    |   n_ingredients |   n_steps |   minutes |   avg_rating |   rating |   calories |   total fat |   saturated fat |   protein |   sugar |   sodium |   carbohydrates | complexity |   complexity_score |   time_per_step |   time_per_ingredient |   steps_per_ingredient |   ingredients_per_step |
-|---:|--------------:|----------:|----------:|-------------:|---------:|-----------:|------------:|----------------:|----------:|--------:|---------:|----------------:|:-----------|-------------------:|----------------:|----------------------:|-----------------------:|-----------------------:|
-|  0 |             9 |        10 |        40 |            4 |        4 |      138.4 |          10 |              19 |         3 |      50 |        3 |               6 | high       |         -0.0153538 |         4       |               4.44444 |               1.11111  |               0.9      |
-|  1 |            11 |        12 |        45 |            5 |        5 |      595.1 |          46 |              51 |        13 |     211 |       22 |              26 | high       |          0.574059  |         3.75    |               4.09091 |               1.09091  |               0.916667 |
-|  2 |             9 |         6 |        40 |            5 |        5 |      194.8 |          20 |              36 |        22 |       6 |       32 |               3 | low        |         -0.454439  |         6.66667 |               4.44444 |               0.666667 |               1.5      |
-|  3 |             9 |         6 |        40 |            5 |        5 |      194.8 |          20 |              36 |        22 |       6 |       32 |               3 | low        |         -0.454439  |         6.66667 |               4.44444 |               0.666667 |               1.5      |
-|  4 |             9 |         6 |        40 |            5 |        5 |      194.8 |          20 |              36 |        22 |       6 |       32 |               3 | low        |         -0.454439  |         6.66667 |               4.44444 |               0.666667 |               1.5      |
+|    | n_ingredients | n_steps | minutes | avg_rating | rating | calories | total fat | saturated fat | protein | sugar | sodium | carbohydrates | complexity | complexity_score |
+|---:|-------------:|--------:|--------:|-----------:|-------:|---------:|----------:|--------------:|--------:|------:|-------:|--------------:|:----------|-----------------:|
+|  0 |           9  |      10 |      40 |          4 |      4 |    138.4 |        10 |            19 |       3 |    50 |      3 |             6 | high      |       -0.0153538 |
+|  1 |          11  |      12 |      45 |          5 |      5 |    595.1 |        46 |            51 |      13 |   211 |     22 |            26 | high      |        0.574059  |
+|  2 |           9  |       6 |      40 |          5 |      5 |    194.8 |        20 |            36 |      22 |     6 |     32 |             3 | low       |       -0.454439  |
+|  3 |           9  |       6 |      40 |          5 |      5 |    194.8 |        20 |            36 |      22 |     6 |     32 |             3 | low       |       -0.454439  |
+|  4 |           9  |       6 |      40 |          5 |      5 |    194.8 |        20 |            36 |      22 |     6 |     32 |             3 | low       |       -0.454439  |
+
 
 ### Univariate Analysis
-Beginning our analysis, we will first begin by analyzing univariate distributions of certain variables. 
+Beginning our analysis, we will first begin by analyzing univariate distributions of certain variables.
 
 <iframe
   src="assets/rating_dist.html"
+  width="800"
+  height="600"
+  frameborder="0"
+></iframe>
+
+This bar chart displays the distribution of recipe ratings, with the x-axis representing average ratings and the y-axis showing the frequency of occurrences. The trend indicates a major class imbalance with the majority of recipes receiving high ratings, with a significant concentration at a rating of 5, while the other ratings are relatively rare. This suggests that users tend to rate recipes positively, possibly due to self-selection bias where only well-received or popular recipes get rated frequently.
+
+<iframe
+  src="assets/complexity_dist.html"
+  width="800"
+  height="600"
+  frameborder="0"
+></iframe>
+
+### Bivariate Analysis
+We continue our analysis by analyzing bivariate distributions of relevant variables.
+
+<iframe
+  src="assets/rating_vs_complexity.html"
+  width="800"
+  height="600"
+  frameborder="0"
+></iframe>
+
+<iframe
+  src="assets/rating_complexity.html"
   width="800"
   height="600"
   frameborder="0"
