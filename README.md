@@ -238,3 +238,9 @@ Our goal is to predict the user rating of a recipe based on various features, su
 We will use the **F1-score** as our primary evaluation metric due to its effectiveness in handling class imbalance. Although accuracy could also be used as an evaluation metric, it can be misleading when certain classes are underrepresented. The F1-score, combining precision and recall, provides a more robust measure of performance across all classes, ensuring that the model is evaluated fairly even in the presence of imbalance.
 
 ---
+
+# Baseline Model
+
+We built a logistic regression model to predict user ratings based on key recipe attributes. The model uses three features: `minutes`, `n_steps`, and `n_ingredients`. All of these features are quantitative, meaning they are numerical measurements that can be used directly in the model without the need for additional encoding. Because the features are already in the appropriate format, no ordinal or nominal encoding was necessary.
+
+Despite the simplicity and interpretability of logistic regression, our evaluation of the model revealed some significant limitations. The model achieved an F1-score of 0.87 for predicting the rating of 5. However, for all other rating classes, the F1-score was 0. This imbalance indicates that the model is heavily biased towards predicting rating 5 and fails to generalize across the full range of user ratings. As a result, while the model performs well on the most frequent class, it is not effective for this prediction problem. Consequently, we do not consider the current model to be "good" because it does not accurately capture the variability in user ratings, highlighting the need for alternative modeling strategies or additional features to address the class imbalance.
