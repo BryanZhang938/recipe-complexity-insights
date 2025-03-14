@@ -50,69 +50,105 @@ To explore this relationship, we will analyze two datasets from *food.com*, an o
 ## Data Cleaning and Exploratory Data Analysis
 
 ### Data Cleaning
-Before we begin analyzing our dataset, we must first clean our dataset first and ensure that it is ready for analysis. Thus, we have conducted the following cleaning steps.
 
-1. Since we currently have two datasets to work with, `raw_interactions` and `raw_recipes`, we would rather work with a singular dataset that contains information from both of these datasets. Thus, we will perform a left merge on `raw_recipes` to merge these DataFrames together, as we want to ensure that all of the recipes are preserved in the merged dataset. We shall refer to this merged dataset as `recipes`, which now contains $234,429$ rows and $18$ columns.
+Before analyzing our data, we must first clean and prepare the dataset. We performed the following cleaning steps:
 
-2. Upon inspection of the possible values of the `ratings` column of `recipes`, we see that it can take on the possible numerical values: $\{0, 1, 2, 3, 4, 5\}$. Since ratings are only defined from the range $[1,5]$, we will replace all values of $0$ with `np.nan` to avoid bias in its distribution.
+1. **Merge Datasets:**  
+   We will combine the two datasets, `raw_interactions` and `raw_recipes`. To accomplish this, we performed a left merge on `raw_recipes` to ensure that all recipes were preserved. We will now refer to this merged dataset as `recipes`, which contains **234,429 rows** and **18 columns**.
 
-3. We will add an additional column `avg_rating`, which will contain the average rating given by users for a particular recipe. This will allow for a more comprehensive understanding of the favorability of a recipe.
+2. **Clean the Ratings Column:**  
+   Upon inspection, the `ratings` column in `recipes` contains the values: {0, 1, 2, 3, 4, 5}. Since ratings are defined in the range [1, 5], we replaced any value of 0 with `np.nan` to eliminate any biases within the `ratings` distribution.
 
-4. The `list` columns in our DataFrame, `steps`, `ingredients`, `nutrition`, and `tags`, are not stored as a `list` object in our DataFrame. To ensure that these are the correct type, we will convert each of these columns into `list` objects.
+3. **Compute Average Rating:**  
+   We added an `avg_rating` column that represents the average rating given by users for each recipe, providing a comprehensive measure of favorability.
 
-5. Next, as indicated earlier, the entries in the `nutrition` column are of the format `[calories (#), total fat (PDV), sugar (PDV), sodium (PDV), protein (PDV), saturated fat (PDV), carbohydrates (PDV)]`. For more effective information retrieval and display, we will split each of the entires of this list into an individual column that represents the nutritional info, respectively. 
+4. **Validate List Columns:**  
+   We converted the columns `steps`, `ingredients`, `nutrition`, and `tags` to the proper `list` type for greater accessibility and data consistency.
 
-6. We will also ensure that `recipe_id` and `user_id` are represented as an integer, to further emphasize the cleanliness of the data.
+5. **Split Nutritional Information:**  
+   We split the list entries of `nutrition` into separate columns representing each nutritional component.
 
-7. We have that the columns `n_ingredients` and `n_steps` reflect the number of elements in the `list` objects in the columns `ingredients` and `steps`, respectively. To further emphasize the cleanliness of the data, we will ensure that the values in `n_ingredients` and `n_steps` reflect the correct number of elements in the lists in `ingredients` and `steps`.
+6. **Validate Data Types:**  
+   We converted `recipe_id` and `user_id` to integers to maintain data consistency.
 
-8. To be able to analyze the complexity of a recipe, we will introduce a new column `complexity_score` and `complexity` into the dataset, defined as above. `complexity_score` will contain a `float` in $\mathbb{R}$ representing the degree of complexity of a recipe, and `complexity` will be a `str` object containing either the values of `high` or `low`, which reflects the complexity class that a recipe belongs in. To create `complexity_score`, we will first standardize the `minutes`, `n_steps`, `n_ingredients` columns and then use the Principal Components Analysis (PCA) dimensionality reduction technique with $1$ component to generate a number that captures the greatest amount of variability across the three columns. Then, to create `complexity`, we define `high` complexity as being above the median `complexity_score`, and `low` complexity as being below the median `complexity_score`.
+7. **Validate Count Columns:**  
+   The columns `n_ingredients` and `n_steps` indicate the number of elements in the `ingredients` and `steps` lists, respectively. We verified that these counts accurately reflect the length of their corresponding lists.
 
-9. To finish the data cleaning process, we will only keep the most relevant columns for our analysis, that being `n_ingredients`, `n_steps`, `minutes`, `avg_rating`, `rating`, `calories`, `total fat`, `saturated fat`, `protein`, `sugar`, `sodium`, `carbohydrates`, `complexity`, `complexity_score`.
+8. **Create Complexity Metrics:**  
+   To analyze recipe complexity, we introduced two new columns:  
+   - **`complexity_score`:** A `float` representing the degree of complexity. We computed this by standardizing the `minutes`, `n_steps`, and `n_ingredients` columns and applying Principal Component Analysis (PCA) with 1 component.  
+   - **`complexity`:** A string that classifies recipes as either `high` or `low` complexity. Recipes with a `complexity_score` above the median are labeled as `high`, while those below are labeled as `low`.
 
-Following data cleaning, we have our resultant DataFrame, of which the first few rows are shown below.
+9. **Select Relevant Columns:**  
+   Finally, we retained only the most relevant columns for analysis:
+   `n_ingredients`, `n_steps`, `minutes`, `avg_rating`, `rating`, `calories`, `total fat`, `saturated fat`, `protein`, `sugar`, `sodium`, `carbohydrates`, `complexity`, and `complexity_score`.
+
+After cleaning, the first five rows of our resulting DataFrame are shown below:
 
 |    | n_ingredients | n_steps | minutes | avg_rating | rating | calories | total fat | saturated fat | protein | sugar | sodium | carbohydrates | complexity | complexity_score |
 |---:|-------------:|--------:|--------:|-----------:|-------:|---------:|----------:|--------------:|--------:|------:|-------:|--------------:|:----------|-----------------:|
-|  0 |           9  |      10 |      40 |          4 |      4 |    138.4 |        10 |            19 |       3 |    50 |      3 |             6 | high      |       -0.0153538 |
-|  1 |          11  |      12 |      45 |          5 |      5 |    595.1 |        46 |            51 |      13 |   211 |     22 |            26 | high      |        0.574059  |
-|  2 |           9  |       6 |      40 |          5 |      5 |    194.8 |        20 |            36 |      22 |     6 |     32 |             3 | low       |       -0.454439  |
-|  3 |           9  |       6 |      40 |          5 |      5 |    194.8 |        20 |            36 |      22 |     6 |     32 |             3 | low       |       -0.454439  |
-|  4 |           9  |       6 |      40 |          5 |      5 |    194.8 |        20 |            36 |      22 |     6 |     32 |             3 | low       |       -0.454439  |
+|  0 |           9  |      10 |      40 |          4 |      4 |    138.4 |        10 |            19 |       3 |    50 |      3 |             6 | high      |       -0.01535   |
+|  1 |          11  |      12 |      45 |          5 |      5 |    595.1 |        46 |            51 |      13 |   211 |     22 |            26 | high      |        0.57406   |
+|  2 |           9  |       6 |      40 |          5 |      5 |    194.8 |        20 |            36 |      22 |     6 |     32 |             3 | low       |       -0.45444   |
+|  3 |           9  |       6 |      40 |          5 |      5 |    194.8 |        20 |            36 |      22 |     6 |     32 |             3 | low       |       -0.45444   |
+|  4 |           9  |       6 |      40 |          5 |      5 |    194.8 |        20 |            36 |      22 |     6 |     32 |             3 | low       |       -0.45444   |
 
+---
 
 ### Univariate Analysis
-Beginning our analysis, we will first begin by analyzing univariate distributions of certain variables.
 
-<iframe
-  src="assets/rating_dist.html"
-  width="800"
-  height="600"
-  frameborder="0"
+We begin our analysis by exploring the univariate distributions of key variables.
+
+<iframe  
+  src="assets/rating_dist.html"  
+  width="800"  
+  height="600"  
+  frameborder="0"  
 ></iframe>
 
-This bar chart displays the distribution of recipe ratings, with the x-axis representing average ratings and the y-axis showing the frequency of occurrences. The trend indicates a major class imbalance with the majority of recipes receiving high ratings, with a significant concentration at a rating of 5, while the other ratings are relatively rare. This suggests that users tend to rate recipes positively, possibly due to self-selection bias where only well-received or popular recipes get rated frequently.
+*Figure: Distribution of Recipe Ratings*  
+This bar graph displays the distribution of recipe ratings. The x-axis represents the average ratings, and the y-axis indicates the frequency of occurrences. The chart reveals a significant class imbalance, with most recipes receiving high ratings while lower ratings are relatively rare. This pattern may reflect a self-selection bias, where only well-received or popular recipes are rated frequently.
 
-<iframe
-  src="assets/complexity_dist.html"
-  width="800"
-  height="600"
-  frameborder="0"
+<iframe  
+  src="assets/complexity_dist.html"  
+  width="800"  
+  height="600"  
+  frameborder="0"  
 ></iframe>
+
+*Figure: Distribution of Recipe Complexity Scores*  
+This histogram illustrates the distribution of recipe complexity scores. Most recipes have scores between -1 and 1, with a right-skewed distribution indicating that the majority of recipes have relatively low-complexity, while fewer recipes exhibit high-complexity.
+
+---
 
 ### Bivariate Analysis
-We continue our analysis by analyzing bivariate distributions of relevant variables.
 
-<iframe
-  src="assets/rating_vs_complexity.html"
-  width="800"
-  height="600"
-  frameborder="0"
+Next, we examine the bivariate distributions between pairs of variables.
+
+<iframe  
+  src="assets/rating_vs_complexity.html"  
+  width="800"  
+  height="600"  
+  frameborder="0"  
 ></iframe>
 
-<iframe
-  src="assets/rating_complexity.html"
-  width="800"
-  height="600"
-  frameborder="0"
-></iframe>
+*Figure: Heatmap of Complexity Scores vs. Ratings*  
+This heatmap visualizes the relationship between recipe complexity scores on the x-axis and ratings on the y-axis, with color intensity representing density. The highest density is observed for recipes with complexity scores near 0 and ratings around 5, suggesting that simpler recipes are more frequently rated and receive higher ratings. More complex recipes are less common, as indicated by lower density across rating levels.
+
+---
+
+### Interesting Aggregates
+
+Below is a pivot table summarizing key metrics by recipe complexity:
+
+| Complexity | Average Minutes | Average Ingredients | Average Steps | Average Rating |
+|:----------:|---------------:|--------------------:|-------------:|---------------:|
+| **High**   | 119.48         | 11.73               | 13.75        | 4.6764         |
+| **Low**    | 94.10          | 6.41                | 6.28         | 4.6833         |
+
+This table highlights the differences between high and low-complexity recipes:
+- **Preparation Time:** High-complexity recipes take longer to cook compared to low-complexity recipes.
+- **Ingredients and Steps:** High-complexity recipes use more ingredients and require more steps.
+- **Ratings:** Regardless of the recipe complexity, the average ratings are nearly identical.
+
+These findings suggest that while high-complexity recipes demand more effort in terms of time, ingredients, and steps, they do not necessarily receive higher ratings. In contrast, simpler recipes may be just as well-received, highlighting that ease of preparation could be a crucial factor in user satisfaction. We will later perform a permutation test to further investigate this observation.
