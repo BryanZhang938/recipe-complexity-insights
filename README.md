@@ -209,7 +209,7 @@ For this test, the observed test statistic is approximately **51.4693** (as indi
 
 ## Hypothesis Testing
 
-As mentioned earlier, we are interested in whether there is a significant difference in ratings between high- and low-complexity recipes. To investigate this, we conducted a one-sided permutation test. This approach allows us to determine whether recipes with high complexity have significantly lower ratings than recipes with low complexity. The significance level is set at 0.05. Our hypotheses are as follows:
+As mentioned earlier, we are interested in whether there is a significant difference in ratings between high and low-complexity recipes. To investigate this, we conducted a one-sided permutation test. This approach allows us to determine whether recipes with high complexity have significantly lower ratings than recipes with low complexity. The significance level is set at 0.05. Our hypotheses are as follows:
 
 - **Null Hypothesis:** There is no difference in average ratings between high-complexity and low-complexity recipes.
 - **Alternate Hypothesis:** Recipes with high complexity have lower average ratings than those with low complexity.
@@ -228,3 +228,13 @@ As mentioned earlier, we are interested in whether there is a significant differ
 For this test, the observed test statistic is approximately **-0.007** (as indicated by the red vertical bar). The corresponding p-value is **0.017**. Since the p-value is less than 0.05, we reject the null hypothesis. Therefore, we conclude that recipes with high complexity have lower average ratings than those with low complexity.
 
 --- 
+
+# Framing a Prediction Problem
+
+**Problem Statement:**  
+Our goal is to predict the user rating of a recipe based on various features, such as the number of ingredients, number of steps, and preparation time. The user rating is provided on a scale from 1 to 5, making this a classification problem. The response variable is `rating`. We chose this variable because it is a direct measure of user satisfaction and engagement with the recipe. Predicting the rating helps us understand how different recipe characteristics influence user satisfaction.
+
+**Evaluation Metric:**  
+We will use the **F1-score** as our primary evaluation metric due to its effectiveness in handling class imbalance. Although accuracy could also be used as an evaluation metric, it can be misleading when certain classes are underrepresented. The F1-score, combining precision and recall, provides a more robust measure of performance across all classes, ensuring that the model is evaluated fairly even in the presence of imbalance.
+
+---
