@@ -106,7 +106,6 @@ We begin our analysis by exploring the univariate distributions of key variables
   frameborder="0"  
 ></iframe>
 
-*Figure: Distribution of Recipe Ratings*  
 This bar graph displays the distribution of recipe ratings. The x-axis represents the average ratings, and the y-axis indicates the frequency of occurrences. The chart reveals a significant class imbalance, with most recipes receiving high ratings while lower ratings are relatively rare. This pattern may reflect a self-selection bias, where only well-received or popular recipes are rated frequently.
 
 <iframe  
@@ -116,7 +115,6 @@ This bar graph displays the distribution of recipe ratings. The x-axis represent
   frameborder="0"  
 ></iframe>
 
-*Figure: Distribution of Recipe Complexity Scores*  
 This histogram illustrates the distribution of recipe complexity scores. Most recipes have scores between -2 and 2, with a right-skewed distribution indicating that the majority of recipes have relatively low-complexity, while fewer recipes exhibit high-complexity.
 
 ---
@@ -132,7 +130,6 @@ Next, we examine the bivariate distributions between pairs of variables.
   frameborder="0"  
 ></iframe>
 
-*Figure: Heatmap of Complexity Scores vs. Ratings*  
 This heatmap visualizes the relationship between recipe complexity scores on the x-axis and ratings on the y-axis, with color intensity representing density. The highest density is observed for recipes with complexity scores near 0 and ratings around 5, suggesting that simpler recipes are more frequently rated and receive higher ratings. More complex recipes are less common, as indicated by lower density across rating levels.
 
 ---
@@ -229,18 +226,65 @@ For this test, the observed test statistic is approximately **-0.007** (as indic
 
 --- 
 
-# Framing a Prediction Problem
+## Framing a Prediction Problem
 
-**Problem Statement:**  
+**Problem Statement**  
 Our goal is to predict the user rating of a recipe based on various features, such as the number of ingredients, number of steps, and preparation time. The user rating is provided on a scale from 1 to 5, making this a classification problem. The response variable is `rating`. We chose this variable because it is a direct measure of user satisfaction and engagement with the recipe. Predicting the rating helps us understand how different recipe characteristics influence user satisfaction.
 
-**Evaluation Metric:**  
+**Evaluation Metric**  
 We will use the **F1-score** as our primary evaluation metric due to its effectiveness in handling class imbalance. Although accuracy could also be used as an evaluation metric, it can be misleading when certain classes are underrepresented. The F1-score, combining precision and recall, provides a more robust measure of performance across all classes, ensuring that the model is evaluated fairly even in the presence of imbalance.
 
 ---
 
-# Baseline Model
+## Baseline Model
 
+**Model Description**
 We built a logistic regression model to predict user ratings based on key recipe attributes. The model uses three features: `minutes`, `n_steps`, and `n_ingredients`. All of these features are quantitative, meaning they are numerical measurements that can be used directly in the model without the need for additional encoding. Because the features are already in the appropriate format, no ordinal or nominal encoding was necessary.
 
-Despite the simplicity and interpretability of logistic regression, our evaluation of the model revealed some significant limitations. The model achieved an F1-score of 0.87 for predicting the rating of 5. However, for all other rating classes, the F1-score was 0. This imbalance indicates that the model is heavily biased towards predicting rating 5 and fails to generalize across the full range of user ratings. As a result, while the model performs well on the most frequent class, it is not effective for this prediction problem. Consequently, we do not consider the current model to be "good" because it does not accurately capture the variability in user ratings, highlighting the need for alternative modeling strategies or additional features to address the class imbalance.
+**Model Results**
+Despite the simplicity and interpretability of logistic regression, our evaluation of the model revealed some significant limitations. The model achieved an F1-score of 0.87 for predicting the rating of 5. However, for all other rating classes, the F1-score was 0. This imbalance indicates that the model is heavily biased towards predicting rating 5 and fails to generalize across the full range of user ratings. As a result, while the model performs well on the most frequent class, it is not effective for this prediction problem. Thus, we do not consider the current model to be "good" because it does not accurately capture the variability in user ratings, highlighting the need for alternative modeling strategies or additional features to address the class imbalance.
+
+## Final Model
+
+### Added Features
+
+For our final model, we introduced several new features that included all of the nutritional information of a particular recipe. We also engineered two new features to capture nuanced aspects of recipe complexity that aren’t directly observable from the raw data:
+
+- **`minutes_per_step`:**  
+  This feature is defined as the total preparation time divided by the number of steps, representing the average time spent on each step. From a data-generating perspective, recipes that require a lot of time per step might indicate a higher degree of complexity. This can be informative due to the results from earlier, where user ratings of a recipe tend to decrease as the complexity increases.
+
+- **`steps_per_ingredient`:**  
+  This feature is computed as the number of steps divided by the number of ingredients. It provides insight into the complexity of each step of the recipe. A higher ratio suggests that even with a limited list of ingredients, the recipe might involve complex steps, which can be an indicator for the overall complexity of a recipe that could impact the rating.
+
+By adding these features, we aim to capture varying aspects of recipe complexity that are likely influencing recipe ratings. These engineered features are motivated by the idea that the cooking process itself is an important component of how recipes are perceived.
+
+### Modeling Algorithm and Hyperparameter Tuning
+
+**Algorithm:**  
+We chose a **Random Forest Classifier** as our modeling algorithm. Random Forests are well-suited for this problem due to their ability to handle non-linear relationships and being robust towards overfitting.
+
+**Hyperparameter Tuning:**  
+We utilized **GridSearchCV** with 5-fold cross-validation to systematically explore hyperparameters and select the best model based on the weighted F1-score. Due to the computationally expensive procedure required in GridSearchCV, the hyperparameters we tuned include:
+- **`n_estimators`:** Number of trees in the forest
+- **`max_depth`:** Maximum depth of the trees
+
+The best performing hyperparameters were:
+- `model__n_estimators`: **50**
+- `model__max_depth`: **None**
+
+### Performance Comparison
+
+**Baseline Model:**  
+Our baseline model was heavily biased toward predicting the majority class (rating 5), resulting in a high F1-score for that class but failing entirely on the other ratings.
+
+**Final Model Performance:**  
+- **Weighted F1-Score:** 0.64  
+- **F1-Score for Class 5:** 0.77  
+- **F1-Scores for Other Classes:** Ranging from 0.04 to 0.23
+
+**Assessment:**  
+While the final model shows improvements in overall weighted F1-score, it still struggles with predicting classes other than 5. However, the inclusion of the additional features provide a more nuanced representation of the recipes. These features capture both the relative complexity of a recipe and the nutritional-related characteristics which should help the model better differentiate between ratings.
+
+Even though the current performance indicates room for improvement, the added features have improved the model's ability to capture underlying factors that may influence user satisfaction. Future work could further address class imbalance or explore additional feature transformations to enhance performance across all rating classes.
+
+---
